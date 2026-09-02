@@ -6,15 +6,15 @@
 <title>Seasons Journal</title>
 <style>
   :root{
-    --bg: #f4f6f8;            /* Soft blue-tinted paper background */
-    --card: #ffffff;          /* Pure white cards */
-    --ink: #1e293b;           /* Deep slate blue for primary text */
-    --sub: #64748b;           /* Muted dusty slate for subtitles */
-    --line: #e2e8f0;          /* Subtle cool gray borders */
-    --accent: #3b82f6;        /* Slate/royal blue highlight accent */
-    --accent-soft: #eff6ff;   /* Very soft ice-blue tag pill background */
-    --accent-border: #bfdbfe; /* Delicate blue border for pills */
-    --danger: #ef4444;        /* Soft crimson for delete state */
+    --bg: #f4f6f8;            
+    --card: #ffffff;          
+    --ink: #1e293b;           
+    --sub: #64748b;           
+    --line: #e2e8f0;          
+    --accent: #3b82f6;        
+    --accent-soft: #eff6ff;   
+    --accent-border: #bfdbfe; 
+    --danger: #ef4444;        
   }
   *{box-sizing:border-box;}
   body{
@@ -25,15 +25,15 @@
     -webkit-font-smoothing:antialiased;
   }
   .wrap{
-    max-width:560px;
+    max-width:1100px;
     margin:0 auto;
-    padding:28px 20px 100px;
+    padding:28px 20px 60px;
   }
   header{
     margin-bottom:24px;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
   }
   header h1{
     font-size:26px;
@@ -55,9 +55,9 @@
     background: var(--card);
     border: 1px solid var(--line);
     color: var(--sub);
-    padding: 6px 10px;
-    font-size: 12px;
-    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: 500;
     transition: all 0.15s ease;
@@ -67,26 +67,118 @@
     color: var(--accent);
     border-color: var(--accent-border);
   }
-  .season-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    margin-bottom:20px;
+
+  /* Mobile View Switcher */
+  .view-toggle {
+    display: flex;
+    background: #e2e8f0;
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 20px;
   }
-  .season-card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:16px 16px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
+  .toggle-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--sub);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .toggle-btn.active {
+    background: var(--card);
+    color: var(--accent);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* Split Layout Grid */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  /* Form Column */
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 20px;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
   }
-  .season-info{
-    min-width:0;
+  .form-card h2 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 600;
   }
+  .field {
+    margin-bottom: 14px;
+  }
+  .field label {
+    display: block;
+    font-size: 13px;
+    color: var(--sub);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .field input, .field textarea {
+    width: 100%;
+    padding: 12px 13px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    font-size: 15px;
+    background: #f8fafc;
+    color: var(--ink);
+  }
+  .field input:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #ffffff;
+  }
+  .form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    background: var(--card);
+    color: var(--ink);
+  }
+  .btn.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* Journal Output Column */
+  .season-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .season-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  }
+  .season-info { min-width: 0; }
   .season-number-tag {
     font-size: 11px;
     font-weight: 700;
@@ -95,11 +187,11 @@
     color: var(--accent);
     margin-bottom: 2px;
   }
-  .season-title{
-    font-size:17px;
-    font-weight:600;
-    margin:0 0 6px;
-    overflow-wrap:break-word;
+  .season-title {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    overflow-wrap: break-word;
     color: var(--ink);
   }
   .season-meta {
@@ -108,153 +200,96 @@
     gap: 6px;
     align-items: center;
   }
-  .season-days{
-    font-size:12px;
-    display:inline-block;
-    background:var(--accent-soft);
-    color:var(--accent);
+  .season-days {
+    font-size: 12px;
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
     border: 1px solid var(--accent-border);
-    padding:2px 8px;
-    border-radius:100px;
-    font-weight:500;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-weight: 500;
   }
   .season-dates {
-    font-size:12px;
-    color:var(--sub);
+    font-size: 12px;
+    color: var(--sub);
   }
-  .season-actions{
-    display:flex;
-    gap:6px;
-    flex-shrink:0;
+  .season-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
   }
-  .icon-btn{
-    border:none;
-    background:transparent;
-    color:var(--sub);
-    width:34px;
-    height:34px;
-    border-radius:8px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    font-size:16px;
-    transition: all 0.15s ease;
+  .icon-btn {
+    border: none;
+    background: transparent;
+    color: var(--sub);
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
   }
-  .icon-btn:hover{
-    background:var(--accent-soft);
-    color:var(--accent);
+  .icon-btn:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
   }
-  .icon-btn.delete:hover{
-    background:#fef2f2;
-    color:var(--danger);
+  .icon-btn.delete:hover {
+    background: #fef2f2;
+    color: var(--danger);
   }
-  .empty{
-    text-align:center;
-    padding:48px 20px;
-    color:var(--sub);
-    border:1px dashed var(--line);
-    border-radius:14px;
+  .empty {
+    text-align: center;
+    padding: 48px 20px;
+    color: var(--sub);
+    border: 1px dashed var(--line);
+    border-radius: 14px;
     background: var(--card);
   }
-  .empty p{margin:0;font-size:14px;}
-  .add-btn{
-    width:100%;
-    padding:14px;
-    border-radius:14px;
-    border:1px solid var(--line);
-    background:var(--card);
-    color:var(--accent);
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    transition: all 0.15s ease;
+  .empty p { margin: 0; font-size: 14px; }
+  .error-text {
+    color: var(--danger);
+    font-size: 12px;
+    margin-top: 5px;
+    display: none;
   }
-  .add-btn:hover{
-    background: var(--accent-soft);
-    border-color: var(--accent-border);
-  }
-  .add-btn:active{transform:scale(0.99);}
 
-  .overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(15, 23, 42, 0.4);
+  /* Desktop View Styling (Side-by-side) */
+  @media (min-width: 768px) {
+    .view-toggle { display: none; }
+    .layout-grid {
+      grid-template-columns: 380px 1fr;
+      gap: 32px;
+    }
+    .form-col, .display-col {
+      display: block !important;
+    }
+    .form-card {
+      position: sticky;
+      top: 28px;
+    }
+  }
+
+  /* Modal Overlay for Sync Features */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4);
     backdrop-filter: blur(2px);
-    display:none;
-    align-items:flex-end;
-    justify-content:center;
-    z-index:10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
   }
-  .overlay.open{display:flex;}
-  .sheet{
-    background:var(--card);
-    width:100%;
-    max-width:560px;
-    border-radius:20px 20px 0 0;
-    padding:22px 20px calc(22px + env(safe-area-inset-bottom));
-    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
-  }
-  @media (min-width:601px){
-    .overlay{align-items:center;}
-    .sheet{border-radius:16px; max-width:440px;}
-  }
-  .sheet h2{
-    margin:0 0 16px;
-    font-size:18px;
-    font-weight:600;
-    color: var(--ink);
-  }
-  .field{
-    margin-bottom:14px;
-  }
-  .field label{
-    display:block;
-    font-size:13px;
-    color:var(--sub);
-    margin-bottom:6px;
-    font-weight:500;
-  }
-  .field input, .field textarea{
-    width:100%;
-    padding:12px 13px;
-    border-radius:10px;
-    border:1px solid var(--line);
-    font-size:15px;
-    background:#f8fafc;
-    color:var(--ink);
-  }
-  .field input:focus, .field textarea:focus{
-    outline:none;
-    border-color:var(--accent);
-    background: #ffffff;
-  }
-  .sheet-actions{
-    display:flex;
-    gap:10px;
-    margin-top:18px;
-  }
-  .btn{
-    flex:1;
-    padding:13px;
-    border-radius:10px;
-    border:1px solid var(--line);
-    font-size:15px;
-    font-weight:600;
-    cursor:pointer;
-    background:var(--card);
-    color:var(--ink);
-  }
-  .btn.primary{
-    background:var(--accent);
-    border-color:var(--accent);
-    color:#fff;
-  }
-  .error-text{
-    color:var(--danger);
-    font-size:12px;
-    margin-top:5px;
-    display:none;
+  .overlay.open { display: flex; }
+  .sheet {
+    background: var(--card);
+    width: 90%;
+    max-width: 440px;
+    border-radius: 16px;
+    padding: 22px 20px;
   }
 </style>
 </head>
@@ -266,24 +301,74 @@
       <p>The chapters of your life, one season at a time.</p>
     </div>
     <div class="sync-actions">
-      <button class="sync-btn" id="exportBtn" title="Export data to move to mobile">Export</button>
-      <button class="sync-btn" id="importBtn" title="Import data from laptop">Import</button>
+      <button class="sync-btn" id="exportBtn">Export</button>
+      <button class="sync-btn" id="importBtn">Import</button>
     </div>
   </header>
 
-  <div class="season-list" id="seasonList"></div>
-  <div class="empty" id="emptyState" style="display:none;">
-    <p>No seasons yet. Add the first chapter of your story.</p>
+  <!-- Mobile Segmented Control -->
+  <div class="view-toggle">
+    <button class="toggle-btn active" id="showFormBtn" onclick="switchMobileView('form')">Add / Edit</button>
+    <button class="toggle-btn" id="showJournalBtn" onclick="switchMobileView('journal')">Journal Entries</button>
   </div>
 
-  <button class="add-btn" id="openAdd">+ Add a season</button>
+  <div class="layout-grid">
+    <!-- Left Column: Input Panel -->
+    <div class="form-col" id="formCol">
+      <div class="form-card">
+        <h2 id="formTitle">Add Season 1</h2>
+        <div class="field">
+          <label for="titleInput">Season Title</label>
+          <input type="text" id="titleInput" placeholder="e.g. Summer of Growth" />
+          <div class="error-text" id="titleError">Enter a title first.</div>
+        </div>
+
+        <div class="field" style="display:flex; gap:10px;">
+          <div style="flex:1;">
+            <label for="startInput">From Day</label>
+            <input type="number" id="startInput" min="1" inputmode="numeric" oninput="onDaysChanged()" />
+          </div>
+          <div style="flex:1;">
+            <label for="endInput">To Day</label>
+            <input type="number" id="endInput" min="1" inputmode="numeric"  oninput="onDaysChanged()" />
+          </div>
+        </div>
+
+        <div class="field" style="display:flex; gap:10px;">
+          <div style="flex:1;">
+            <label for="startDateInput">Start Date</label>
+            <input type="date" id="startDateInput" onchange="onDatesChanged()" />
+          </div>
+          <div style="flex:1;">
+            <label for="endDateInput">End Date</label>
+            <input type="date" id="endDateInput" onchange="onDatesChanged()" />
+          </div>
+        </div>
+
+        <div class="error-text" id="daysError">Enter a valid day range (To Day must be ≥ From Day).</div>
+        
+        <div class="form-actions">
+          <button class="btn" id="cancelEditBtn" style="display:none;" onclick="resetForm()">Cancel Edit</button>
+          <button class="btn primary" id="saveBtn" onclick="save()">Save Season</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Journal Timeline Display -->
+    <div class="display-col" id="displayCol" style="display:none;">
+      <div class="season-list" id="seasonList"></div>
+      <div class="empty" id="emptyState" style="display:none;">
+        <p>No seasons yet. Add your first entry using the form.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="overlay" id="overlay">
-  <div class="sheet" id="sheetContent">
-    <h2 id="sheetTitle">Add a season</h2>
-    <div id="formBody"></div>
-    <div class="sheet-actions" id="sheetActions"></div>
+  <div class="sheet">
+    <h2 id="sheetTitle">Sync Data</h2>
+    <div id="sheetBody"></div>
+    <div class="form-actions" id="sheetActions"></div>
   </div>
 </div>
 
@@ -294,10 +379,7 @@
   const listEl = document.getElementById('seasonList');
   const emptyEl = document.getElementById('emptyState');
   const overlay = document.getElementById('overlay');
-  const sheetTitle = document.getElementById('sheetTitle');
-  const formBody = document.getElementById('formBody');
-  const sheetActions = document.getElementById('sheetActions');
-
+  
   function saveToStorage() {
     localStorage.setItem('seasons_journal', JSON.stringify(seasons));
   }
@@ -306,6 +388,65 @@
     if (!dateStr) return '';
     const date = new Date(dateStr + 'T00:00:00');
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // Direction A: Day Range -> Calculates End Date
+  function onDaysChanged() {
+    const startNum = parseInt(document.getElementById('startInput').value, 10);
+    const endNum = parseInt(document.getElementById('endInput').value, 10);
+    const startDateVal = document.getElementById('startDateInput').value;
+
+    if (startDateVal && !isNaN(startNum) && !isNaN(endNum) && endNum >= startNum) {
+      const diffInDays = endNum - startNum;
+      const startDate = new Date(startDateVal + 'T00:00:00');
+      startDate.setDate(startDate.getDate() + diffInDays);
+
+      const yyyy = startDate.getFullYear();
+      const mm = String(startDate.getMonth() + 1).padStart(2, '0');
+      const dd = String(startDate.getDate()).padStart(2, '0');
+
+      document.getElementById('endDateInput').value = `${yyyy}-${mm}-${dd}`;
+    }
+  }
+
+  // Direction B: Date Range -> Calculates To Day (e.g. Day 846 + 21 days = Day 867)
+  function onDatesChanged() {
+    const startDateVal = document.getElementById('startDateInput').value;
+    const endDateVal = document.getElementById('endDateInput').value;
+    const startNum = parseInt(document.getElementById('startInput').value, 10) || 1;
+
+    if (startDateVal && endDateVal) {
+      const start = new Date(startDateVal + 'T00:00:00');
+      const end = new Date(endDateVal + 'T00:00:00');
+      
+      const diffTime = end - start;
+      const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays >= 0) {
+        document.getElementById('endInput').value = startNum + diffDays;
+      }
+    } else if (startDateVal) {
+      onDaysChanged();
+    }
+  }
+
+  function switchMobileView(view) {
+    const formCol = document.getElementById('formCol');
+    const displayCol = document.getElementById('displayCol');
+    const formToggle = document.getElementById('showFormBtn');
+    const journalToggle = document.getElementById('showJournalBtn');
+
+    if (view === 'form') {
+      formCol.style.display = 'block';
+      displayCol.style.display = 'none';
+      formToggle.classList.add('active');
+      journalToggle.classList.remove('active');
+    } else {
+      formCol.style.display = 'none';
+      displayCol.style.display = 'block';
+      journalToggle.classList.add('active');
+      formToggle.classList.remove('active');
+    }
   }
 
   function render(){
@@ -321,6 +462,8 @@
         let dateRangeText = '';
         if (s.startDate && s.endDate) {
           dateRangeText = `${formatDate(s.startDate)} – ${formatDate(s.endDate)}`;
+        } else if (s.startDate) {
+          dateRangeText = `Started ${formatDate(s.startDate)}`;
         }
 
         card.innerHTML = `
@@ -329,7 +472,7 @@
             <div class="season-title"></div>
             <div class="season-meta">
               <span class="season-days"></span>
-              <span class="season-dates">${dateRangeText}</span>
+              ${dateRangeText ? `<span class="season-dates">${dateRangeText}</span>` : ''}
             </div>
           </div>
           <div class="season-actions">
@@ -339,7 +482,7 @@
         `;
         
         card.querySelector('.season-title').textContent = s.title;
-        card.querySelector('.season-days').textContent = 'Day ' + s.start + ' – Day ' + s.end + ' (' + s.days + (s.days === 1 ? ' day' : ' days') + ')';
+        card.querySelector('.season-days').textContent = `Day ${s.start} – Day ${s.end} (${s.days} ${s.days === 1 ? 'day' : 'days'})`;
         card.querySelector('.edit-btn').onclick = () => openEdit(s.id);
         card.querySelector('.delete-btn').onclick = () => deleteSeason(s.id);
         listEl.appendChild(card);
@@ -347,113 +490,59 @@
     }
   }
 
-  function renderForm(s = null) {
-    const titleVal = s ? s.title : '';
-    const startVal = s ? s.start : '';
-    const endVal = s ? s.end : '';
-    const startDateVal = s ? (s.startDate || '') : '';
-    const endDateVal = s ? (s.endDate || '') : '';
-
-    formBody.innerHTML = `
-      <div class="field">
-        <label for="titleInput">Season Title</label>
-        <input type="text" id="titleInput" placeholder="e.g. Summer of Learning" value="${titleVal}" />
-        <div class="error-text" id="titleError">Enter a title first.</div>
-      </div>
-      <div class="field" style="display:flex; gap:10px;">
-        <div style="flex:1;">
-          <label for="startDateInput">Start Date</label>
-          <input type="date" id="startDateInput" value="${startDateVal}" />
-        </div>
-        <div style="flex:1;">
-          <label for="endDateInput">End Date</label>
-          <input type="date" id="endDateInput" value="${endDateVal}" />
-        </div>
-      </div>
-      <div class="field" style="display:flex; gap:10px;">
-        <div style="flex:1;">
-          <label for="startInput">From day</label>
-          <input type="number" id="startInput" min="1" inputmode="numeric" value="${startVal}" placeholder="1" />
-        </div>
-        <div style="flex:1;">
-          <label for="endInput">To day</label>
-          <input type="number" id="endInput" min="1" inputmode="numeric" value="${endVal}" placeholder="30" />
-        </div>
-      </div>
-      <div class="error-text" id="daysError">Enter a valid day range (end must be after start).</div>
-      <div class="error-text" id="datesError">End date must be after start date.</div>
-    `;
-
-    sheetActions.style.display = 'flex';
-    sheetActions.innerHTML = `
-      <button class="btn" id="cancelBtn">Cancel</button>
-      <button class="btn primary" id="saveBtn">Save</button>
-    `;
-
-    document.getElementById('cancelBtn').onclick = closeSheet;
-    document.getElementById('saveBtn').onclick = save;
-  }
-
-  function openAdd(){
+  function resetForm() {
     editingId = null;
-    sheetTitle.textContent = `Add Season ${seasons.length + 1}`;
-    renderForm();
-    overlay.classList.add('open');
-    setTimeout(() => document.getElementById('titleInput').focus(), 50);
+    document.getElementById('formTitle').textContent = `Add Season ${seasons.length + 1}`;
+    document.getElementById('titleInput').value = '';
+    document.getElementById('startInput').value = '';
+    document.getElementById('endInput').value = '';
+    document.getElementById('startDateInput').value = '';
+    document.getElementById('endDateInput').value = '';
+    document.getElementById('cancelEditBtn').style.display = 'none';
+    document.getElementById('saveBtn').textContent = 'Save Season';
   }
 
-  function openEdit(id){
+  function openEdit(id) {
     const s = seasons.find(x => x.id === id);
-    if(!s) return;
+    if (!s) return;
     editingId = id;
     const seasonIndex = seasons.findIndex(x => x.id === id) + 1;
-    sheetTitle.textContent = `Edit Season ${seasonIndex}`;
-    renderForm(s);
-    overlay.classList.add('open');
-  }
+    
+    document.getElementById('formTitle').textContent = `Edit Season ${seasonIndex}`;
+    document.getElementById('titleInput').value = s.title;
+    document.getElementById('startInput').value = s.start;
+    document.getElementById('endInput').value = s.end;
+    document.getElementById('startDateInput').value = s.startDate || '';
+    document.getElementById('endDateInput').value = s.endDate || '';
+    document.getElementById('cancelEditBtn').style.display = 'block';
+    document.getElementById('saveBtn').textContent = 'Update Season';
 
-  function closeSheet(){
-    overlay.classList.remove('open');
+    if (window.innerWidth < 768) {
+      switchMobileView('form');
+    }
   }
 
   function save(){
-    const tInput = document.getElementById('titleInput');
-    const sInput = document.getElementById('startInput');
-    const eInput = document.getElementById('endInput');
-    const stDateInput = document.getElementById('startDateInput');
-    const endDateInput = document.getElementById('endDateInput');
-
-    const tError = document.getElementById('titleError');
-    const dError = document.getElementById('daysError');
-    const dtError = document.getElementById('datesError');
-
-    const title = tInput.value.trim();
-    const start = parseInt(sInput.value, 10);
-    const end = parseInt(eInput.value, 10);
-    const startDate = stDateInput.value;
-    const endDate = endDateInput.value;
+    const title = document.getElementById('titleInput').value.trim();
+    const start = parseInt(document.getElementById('startInput').value, 10);
+    const end = parseInt(document.getElementById('endInput').value, 10);
+    const startDate = document.getElementById('startDateInput').value;
+    const endDate = document.getElementById('endDateInput').value;
 
     let valid = true;
 
     if(!title){
-      tError.style.display = 'block';
+      document.getElementById('titleError').style.display = 'block';
       valid = false;
     } else {
-      tError.style.display = 'none';
+      document.getElementById('titleError').style.display = 'none';
     }
 
     if(isNaN(start) || isNaN(end) || start < 1 || end < start){
-      dError.style.display = 'block';
+      document.getElementById('daysError').style.display = 'block';
       valid = false;
     } else {
-      dError.style.display = 'none';
-    }
-
-    if(startDate && endDate && new Date(startDate) > new Date(endDate)) {
-      dtError.style.display = 'block';
-      valid = false;
-    } else {
-      dtError.style.display = 'none';
+      document.getElementById('daysError').style.display = 'none';
     }
 
     if(!valid) return;
@@ -471,60 +560,55 @@
     } else {
       seasons.push({
         id: Date.now().toString(),
-        title: title,
-        start: start,
-        end: end,
-        days: days,
-        startDate: startDate,
-        endDate: endDate,
-        entries: []
+        title, start, end, days, startDate, endDate, entries: []
       });
     }
 
     saveToStorage();
     render();
-    closeSheet();
+    resetForm();
+
+    if (window.innerWidth < 768) {
+      switchMobileView('journal');
+    }
   }
 
   function deleteSeason(id){
     seasons = seasons.filter(s => s.id !== id);
     saveToStorage();
     render();
+    resetForm();
   }
 
+  // Import / Export Overlay Logic
   document.getElementById('exportBtn').onclick = () => {
-    const dataStr = JSON.stringify(seasons, null, 2);
-    sheetTitle.textContent = 'Export Data';
-    formBody.innerHTML = `
+    document.getElementById('sheetTitle').textContent = 'Export Data';
+    document.getElementById('sheetBody').innerHTML = `
       <div class="field">
-        <label>Copy this code to paste on your other device:</label>
-        <textarea rows="6" readonly id="exportArea">${dataStr}</textarea>
+        <label>Copy this code to paste on another device:</label>
+        <textarea rows="6" readonly style="width:100%;">${JSON.stringify(seasons, null, 2)}</textarea>
       </div>
     `;
-    sheetActions.style.display = 'block';
-    sheetActions.innerHTML = `<button class="btn primary" style="width:100%" id="copyBtn">Copy to Clipboard</button>`;
+    document.getElementById('sheetActions').innerHTML = `<button class="btn primary" style="width:100%" id="copyBtn">Copy Code</button>`;
     document.getElementById('copyBtn').onclick = () => {
-      navigator.clipboard.writeText(dataStr);
+      navigator.clipboard.writeText(JSON.stringify(seasons, null, 2));
       document.getElementById('copyBtn').textContent = 'Copied!';
     };
     overlay.classList.add('open');
   };
 
   document.getElementById('importBtn').onclick = () => {
-    sheetTitle.textContent = 'Import Data';
-    formBody.innerHTML = `
+    document.getElementById('sheetTitle').textContent = 'Import Data';
+    document.getElementById('sheetBody').innerHTML = `
       <div class="field">
         <label>Paste your exported code here:</label>
-        <textarea rows="6" id="importArea" placeholder="Paste JSON here..."></textarea>
+        <textarea rows="6" id="importArea" style="width:100%;" placeholder="Paste JSON..."></textarea>
       </div>
-      <div class="error-text" id="importError">Invalid data format.</div>
     `;
-    sheetActions.style.display = 'flex';
-    sheetActions.innerHTML = `
-      <button class="btn" id="cancelBtn">Cancel</button>
+    document.getElementById('sheetActions').innerHTML = `
+      <button class="btn" onclick="overlay.classList.remove('open')">Cancel</button>
       <button class="btn primary" id="confirmImport">Import</button>
     `;
-    document.getElementById('cancelBtn').onclick = closeSheet;
     document.getElementById('confirmImport').onclick = () => {
       try {
         const parsed = JSON.parse(document.getElementById('importArea').value);
@@ -532,19 +616,22 @@
           seasons = parsed;
           saveToStorage();
           render();
-          closeSheet();
-        } else {
-          throw new Error();
+          resetForm();
+          overlay.classList.remove('open');
         }
       } catch(e) {
-        document.getElementById('importError').style.display = 'block';
+        alert('Invalid JSON data format');
       }
     };
     overlay.classList.add('open');
   };
 
-  document.getElementById('openAdd').onclick = openAdd;
-  overlay.onclick = (e) => { if(e.target === overlay) closeSheet(); };
+  overlay.onclick = (e) => { if(e.target === overlay) overlay.classList.remove('open'); };
+
+  // Set initial screen state for mobile
+  if (window.innerWidth < 768) {
+    switchMobileView('form');
+  }
 
   render();
 </script>
