@@ -6,14 +6,15 @@
 <title>Seasons Journal</title>
 <style>
   :root{
-    --bg:#faf8f5;
-    --card:#ffffff;
-    --ink:#2b2824;
-    --sub:#8a8378;
-    --line:#e9e4dc;
-    --accent:#a8724f;
-    --accent-soft:#f2e6dc;
-    --danger:#b5544a;
+    --bg: #f4f6f8;            /* Soft blue-tinted paper background */
+    --card: #ffffff;          /* Pure white cards */
+    --ink: #1e293b;           /* Deep slate blue for primary text */
+    --sub: #64748b;           /* Muted dusty slate for subtitles */
+    --line: #e2e8f0;          /* Subtle cool gray borders */
+    --accent: #3b82f6;        /* Slate/royal blue highlight accent */
+    --accent-soft: #eff6ff;   /* Very soft ice-blue tag pill background */
+    --accent-border: #bfdbfe; /* Delicate blue border for pills */
+    --danger: #ef4444;        /* Soft crimson for delete state */
   }
   *{box-sizing:border-box;}
   body{
@@ -39,6 +40,7 @@
     font-weight:600;
     margin:0 0 4px;
     letter-spacing:-0.02em;
+    color: var(--ink);
   }
   header p{
     margin:0;
@@ -58,15 +60,17 @@
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
+    transition: all 0.15s ease;
   }
   .sync-btn:hover {
     background: var(--accent-soft);
     color: var(--accent);
+    border-color: var(--accent-border);
   }
   .season-list{
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:12px;
     margin-bottom:20px;
   }
   .season-card{
@@ -78,24 +82,45 @@
     align-items:center;
     justify-content:space-between;
     gap:12px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
   }
   .season-info{
     min-width:0;
   }
+  .season-number-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
   .season-title{
-    font-size:16px;
+    font-size:17px;
     font-weight:600;
-    margin:0 0 4px;
+    margin:0 0 6px;
     overflow-wrap:break-word;
+    color: var(--ink);
+  }
+  .season-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
   }
   .season-days{
-    font-size:13px;
+    font-size:12px;
     display:inline-block;
     background:var(--accent-soft);
     color:var(--accent);
-    padding:2px 9px;
+    border: 1px solid var(--accent-border);
+    padding:2px 8px;
     border-radius:100px;
     font-weight:500;
+  }
+  .season-dates {
+    font-size:12px;
+    color:var(--sub);
   }
   .season-actions{
     display:flex;
@@ -114,13 +139,14 @@
     justify-content:center;
     cursor:pointer;
     font-size:16px;
+    transition: all 0.15s ease;
   }
   .icon-btn:hover{
     background:var(--accent-soft);
     color:var(--accent);
   }
   .icon-btn.delete:hover{
-    background:#f6e5e2;
+    background:#fef2f2;
     color:var(--danger);
   }
   .empty{
@@ -129,6 +155,7 @@
     color:var(--sub);
     border:1px dashed var(--line);
     border-radius:14px;
+    background: var(--card);
   }
   .empty p{margin:0;font-size:14px;}
   .add-btn{
@@ -141,13 +168,19 @@
     font-size:15px;
     font-weight:600;
     cursor:pointer;
+    transition: all 0.15s ease;
+  }
+  .add-btn:hover{
+    background: var(--accent-soft);
+    border-color: var(--accent-border);
   }
   .add-btn:active{transform:scale(0.99);}
 
   .overlay{
     position:fixed;
     inset:0;
-    background:rgba(30,25,20,0.35);
+    background:rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(2px);
     display:none;
     align-items:flex-end;
     justify-content:center;
@@ -160,15 +193,17 @@
     max-width:560px;
     border-radius:20px 20px 0 0;
     padding:22px 20px calc(22px + env(safe-area-inset-bottom));
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
   }
   @media (min-width:601px){
     .overlay{align-items:center;}
-    .sheet{border-radius:16px; max-width:420px;}
+    .sheet{border-radius:16px; max-width:440px;}
   }
   .sheet h2{
     margin:0 0 16px;
     font-size:18px;
     font-weight:600;
+    color: var(--ink);
   }
   .field{
     margin-bottom:14px;
@@ -186,12 +221,13 @@
     border-radius:10px;
     border:1px solid var(--line);
     font-size:15px;
-    background:#fdfcfb;
+    background:#f8fafc;
     color:var(--ink);
   }
   .field input:focus, .field textarea:focus{
     outline:none;
     border-color:var(--accent);
+    background: #ffffff;
   }
   .sheet-actions{
     display:flex;
@@ -220,14 +256,13 @@
     margin-top:5px;
     display:none;
   }
-  .error-text.show{display:block;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <div>
-      <h1>Seasons journal</h1>
+      <h1>Seasons Journal</h1>
       <p>The chapters of your life, one season at a time.</p>
     </div>
     <div class="sync-actions">
@@ -247,28 +282,8 @@
 <div class="overlay" id="overlay">
   <div class="sheet" id="sheetContent">
     <h2 id="sheetTitle">Add a season</h2>
-    <div id="formBody">
-      <div class="field">
-        <label for="titleInput">Title</label>
-        <input type="text" id="titleInput" />
-        <div class="error-text" id="titleError">Enter a title first.</div>
-      </div>
-      <div class="field" style="display:flex; gap:10px;">
-        <div style="flex:1;">
-          <label for="startInput">From day</label>
-          <input type="number" id="startInput" min="1" inputmode="numeric" />
-        </div>
-        <div style="flex:1;">
-          <label for="endInput">To day</label>
-          <input type="number" id="endInput" min="1" inputmode="numeric" />
-        </div>
-      </div>
-      <div class="error-text" id="daysError">Enter a valid day range (end must be after start).</div>
-    </div>
-    <div class="sheet-actions" id="sheetActions">
-      <button class="btn" id="cancelBtn">Cancel</button>
-      <button class="btn primary" id="saveBtn">Save</button>
-    </div>
+    <div id="formBody"></div>
+    <div class="sheet-actions" id="sheetActions"></div>
   </div>
 </div>
 
@@ -282,15 +297,15 @@
   const sheetTitle = document.getElementById('sheetTitle');
   const formBody = document.getElementById('formBody');
   const sheetActions = document.getElementById('sheetActions');
-  
-  const titleInput = document.getElementById('titleInput');
-  const startInput = document.getElementById('startInput');
-  const endInput = document.getElementById('endInput');
-  const titleError = document.getElementById('titleError');
-  const daysError = document.getElementById('daysError');
 
   function saveToStorage() {
     localStorage.setItem('seasons_journal', JSON.stringify(seasons));
+  }
+
+  function formatDate(dateStr) {
+    if (!dateStr) return '';
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
   function render(){
@@ -299,21 +314,32 @@
       emptyEl.style.display = 'block';
     } else {
       emptyEl.style.display = 'none';
-      seasons.forEach(s => {
+      seasons.forEach((s, index) => {
         const card = document.createElement('div');
         card.className = 'season-card';
+        
+        let dateRangeText = '';
+        if (s.startDate && s.endDate) {
+          dateRangeText = `${formatDate(s.startDate)} – ${formatDate(s.endDate)}`;
+        }
+
         card.innerHTML = `
           <div class="season-info">
-            <p class="season-title"></p>
-            <span class="season-days"></span>
+            <div class="season-number-tag">Season ${index + 1}</div>
+            <div class="season-title"></div>
+            <div class="season-meta">
+              <span class="season-days"></span>
+              <span class="season-dates">${dateRangeText}</span>
+            </div>
           </div>
           <div class="season-actions">
             <button class="icon-btn edit-btn" aria-label="Edit">✎</button>
             <button class="icon-btn delete delete-btn" aria-label="✕">✕</button>
           </div>
         `;
+        
         card.querySelector('.season-title').textContent = s.title;
-        card.querySelector('.season-days').textContent = 'Day ' + s.start + ' – Day ' + s.end + ' · ' + s.days + (s.days === 1 ? ' day' : ' days');
+        card.querySelector('.season-days').textContent = 'Day ' + s.start + ' – Day ' + s.end + ' (' + s.days + (s.days === 1 ? ' day' : ' days') + ')';
         card.querySelector('.edit-btn').onclick = () => openEdit(s.id);
         card.querySelector('.delete-btn').onclick = () => deleteSeason(s.id);
         listEl.appendChild(card);
@@ -321,34 +347,57 @@
     }
   }
 
-  function openAdd(){
-    editingId = null;
-    sheetTitle.textContent = 'Add a season';
+  function renderForm(s = null) {
+    const titleVal = s ? s.title : '';
+    const startVal = s ? s.start : '';
+    const endVal = s ? s.end : '';
+    const startDateVal = s ? (s.startDate || '') : '';
+    const endDateVal = s ? (s.endDate || '') : '';
+
     formBody.innerHTML = `
       <div class="field">
-        <label for="titleInput">Title</label>
-        <input type="text" id="titleInput" />
-        <div class="error-text" id="titleError" style="display:none;">Enter a title first.</div>
+        <label for="titleInput">Season Title</label>
+        <input type="text" id="titleInput" placeholder="e.g. Summer of Learning" value="${titleVal}" />
+        <div class="error-text" id="titleError">Enter a title first.</div>
+      </div>
+      <div class="field" style="display:flex; gap:10px;">
+        <div style="flex:1;">
+          <label for="startDateInput">Start Date</label>
+          <input type="date" id="startDateInput" value="${startDateVal}" />
+        </div>
+        <div style="flex:1;">
+          <label for="endDateInput">End Date</label>
+          <input type="date" id="endDateInput" value="${endDateVal}" />
+        </div>
       </div>
       <div class="field" style="display:flex; gap:10px;">
         <div style="flex:1;">
           <label for="startInput">From day</label>
-          <input type="number" id="startInput" min="1" inputmode="numeric" />
+          <input type="number" id="startInput" min="1" inputmode="numeric" value="${startVal}" placeholder="1" />
         </div>
         <div style="flex:1;">
           <label for="endInput">To day</label>
-          <input type="number" id="endInput" min="1" inputmode="numeric" />
+          <input type="number" id="endInput" min="1" inputmode="numeric" value="${endVal}" placeholder="30" />
         </div>
       </div>
-      <div class="error-text" id="daysError" style="display:none;">Enter a valid day range (end must be after start).</div>
+      <div class="error-text" id="daysError">Enter a valid day range (end must be after start).</div>
+      <div class="error-text" id="datesError">End date must be after start date.</div>
     `;
+
     sheetActions.style.display = 'flex';
     sheetActions.innerHTML = `
       <button class="btn" id="cancelBtn">Cancel</button>
       <button class="btn primary" id="saveBtn">Save</button>
     `;
+
     document.getElementById('cancelBtn').onclick = closeSheet;
     document.getElementById('saveBtn').onclick = save;
+  }
+
+  function openAdd(){
+    editingId = null;
+    sheetTitle.textContent = `Add Season ${seasons.length + 1}`;
+    renderForm();
     overlay.classList.add('open');
     setTimeout(() => document.getElementById('titleInput').focus(), 50);
   }
@@ -357,32 +406,9 @@
     const s = seasons.find(x => x.id === id);
     if(!s) return;
     editingId = id;
-    sheetTitle.textContent = 'Edit season';
-    formBody.innerHTML = `
-      <div class="field">
-        <label for="titleInput">Title</label>
-        <input type="text" id="titleInput" value="${s.title}" />
-        <div class="error-text" id="titleError" style="display:none;">Enter a title first.</div>
-      </div>
-      <div class="field" style="display:flex; gap:10px;">
-        <div style="flex:1;">
-          <label for="startInput">From day</label>
-          <input type="number" id="startInput" min="1" inputmode="numeric" value="${s.start}" />
-        </div>
-        <div style="flex:1;">
-          <label for="endInput">To day</label>
-          <input type="number" id="endInput" min="1" inputmode="numeric" value="${s.end}" />
-        </div>
-      </div>
-      <div class="error-text" id="daysError" style="display:none;">Enter a valid day range (end must be after start).</div>
-    `;
-    sheetActions.style.display = 'flex';
-    sheetActions.innerHTML = `
-      <button class="btn" id="cancelBtn">Cancel</button>
-      <button class="btn primary" id="saveBtn">Save</button>
-    `;
-    document.getElementById('cancelBtn').onclick = closeSheet;
-    document.getElementById('saveBtn').onclick = save;
+    const seasonIndex = seasons.findIndex(x => x.id === id) + 1;
+    sheetTitle.textContent = `Edit Season ${seasonIndex}`;
+    renderForm(s);
     overlay.classList.add('open');
   }
 
@@ -394,12 +420,19 @@
     const tInput = document.getElementById('titleInput');
     const sInput = document.getElementById('startInput');
     const eInput = document.getElementById('endInput');
+    const stDateInput = document.getElementById('startDateInput');
+    const endDateInput = document.getElementById('endDateInput');
+
     const tError = document.getElementById('titleError');
     const dError = document.getElementById('daysError');
+    const dtError = document.getElementById('datesError');
 
     const title = tInput.value.trim();
     const start = parseInt(sInput.value, 10);
     const end = parseInt(eInput.value, 10);
+    const startDate = stDateInput.value;
+    const endDate = endDateInput.value;
+
     let valid = true;
 
     if(!title){
@@ -416,6 +449,13 @@
       dError.style.display = 'none';
     }
 
+    if(startDate && endDate && new Date(startDate) > new Date(endDate)) {
+      dtError.style.display = 'block';
+      valid = false;
+    } else {
+      dtError.style.display = 'none';
+    }
+
     if(!valid) return;
 
     const days = end - start + 1;
@@ -426,6 +466,8 @@
       s.start = start;
       s.end = end;
       s.days = days;
+      s.startDate = startDate;
+      s.endDate = endDate;
     } else {
       seasons.push({
         id: Date.now().toString(),
@@ -433,6 +475,8 @@
         start: start,
         end: end,
         days: days,
+        startDate: startDate,
+        endDate: endDate,
         entries: []
       });
     }
@@ -448,7 +492,6 @@
     render();
   }
 
-  // Export / Import logic for syncing without a backend
   document.getElementById('exportBtn').onclick = () => {
     const dataStr = JSON.stringify(seasons, null, 2);
     sheetTitle.textContent = 'Export Data';
@@ -474,7 +517,7 @@
         <label>Paste your exported code here:</label>
         <textarea rows="6" id="importArea" placeholder="Paste JSON here..."></textarea>
       </div>
-      <div class="error-text" id="importError" style="display:none;">Invalid data format.</div>
+      <div class="error-text" id="importError">Invalid data format.</div>
     `;
     sheetActions.style.display = 'flex';
     sheetActions.innerHTML = `
